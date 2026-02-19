@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Advanced CGPA Calculator</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Advanced CGPA Calculator</h1>
+
+
+
+<div id="semesterContainer"></div>
+<button onclick="addSemester()">Add Semester</button>
+<button id="calculateAll" onclick="calculateAll()" class="hidden">Calculate Overall CGPA</button>
+
+<div id="finalResult" class="hidden">
+<h2 id="cgpa"></h2>
+<h2 id="percentage"></h2>
+<div id="semesterResults"></div>
+</div>
+
+<div id="loader" class="loader hidden"></div>
+<div id="error" class="error hidden"></div>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
