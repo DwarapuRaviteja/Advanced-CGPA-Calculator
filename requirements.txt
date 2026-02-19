@@ -2,4 +2,3 @@ flask
 google-generativeai
 pillow
 gunicorn
-os
