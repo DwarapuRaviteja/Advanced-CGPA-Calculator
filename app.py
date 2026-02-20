@@ -5,10 +5,10 @@ import io
 import json
 import re
 import os
+
 app = Flask(__name__)
 
 genai.configure(api_key=os.environ.get("calculator"))
-
 
 model = genai.GenerativeModel("models/gemini-2.5-flash")
 
@@ -23,10 +23,11 @@ def analyze():
     try:
         file = request.files['image']
         img_bytes = file.read()
-image =
-Image.open(io.BytesIO(img_bytes)).convert("RGB")
-max_size = (1500,1500)
-image.thumbnail(max_size)
+
+        image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
+        max_size = (1500,1500)
+        image.thumbnail(max_size)
+
         prompt = """
         Analyze this academic result image.
         Extract subject code, subject name, credits and grade.
