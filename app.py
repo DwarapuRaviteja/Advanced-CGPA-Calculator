@@ -23,8 +23,8 @@ def analyze():
     try:
         file = request.files['image']
         img_bytes = file.read()
-image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
-
+image =
+Image.open(io.BytesIO(img_bytes)).convert("RGB")
 max_size = (1500,1500)
 image.thumbnail(max_size)
         prompt = """
