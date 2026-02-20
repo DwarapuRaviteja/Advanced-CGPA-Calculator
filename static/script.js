@@ -10,7 +10,7 @@ function addSemester(){
     div.className="semesterBlock"
     div.innerHTML=`
     <h2>Semester ${semesterCount}</h2>
-    <input type="file" accept="image/*" onchange="uploadImage(this,${semesterCount})">
+    <input type="file" accept="image/*,.jpg,.jpeg,.png" capture="environment" onchange="uploadImage(this,${semesterCount})">
     <table id="table${semesterCount}">
     <thead>
     <tr>
