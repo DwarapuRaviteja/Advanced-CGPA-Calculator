@@ -1,122 +1,933 @@
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(270deg,#0f2027,#203a43,#2c5364);
-background-size:400% 400%;
-animation:bg 12s ease infinite;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
+/* ==========================================================
+   ADVANCED CGPA CALCULATOR
+   PART 1
+   Global Layout
+   ========================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-@keyframes bg{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Segoe UI",Arial,sans-serif;
+    min-height:100vh;
+    color:#fff;
+    background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1f4068);
+    background-size:400% 400%;
+    animation:gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+
 }
 
 .container{
-width:95%;
-max-width:1000px;
-text-align:center;
-padding:30px;
-backdrop-filter:blur(15px);
-border-radius:20px;
-box-shadow:0 0 30px cyan;
+
+    width:95%;
+    max-width:1200px;
+
+    margin:40px auto;
+
+    padding:35px;
+
+    border-radius:25px;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+
+        0 10px 40px rgba(0,0,0,.45),
+
+        0 0 25px rgba(0,255,255,.15);
+
 }
 
-.upload-area{
-border:3px dashed cyan;
-padding:30px;
-border-radius:15px;
-cursor:pointer;
-transition:0.4s;
+.title{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    text-align:center;
+
+    margin-bottom:12px;
+
+    color:#fff;
+
+    letter-spacing:1px;
+
 }
 
-.upload-area:hover{
-transform:scale(1.05);
+.subtitle{
+
+    text-align:center;
+
+    color:#d6ecff;
+
+    margin-bottom:35px;
+
+    font-size:18px;
+
 }
 
-.loader{
-border:6px solid rgba(255,255,255,0.2);
-border-top:6px solid cyan;
-border-radius:50%;
-width:60px;
-height:60px;
-animation:spin 1s linear infinite;
-margin:20px auto;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
-
-th,td{
-border:1px solid cyan;
-padding:10px;
-}
-
-button{
-padding:10px 20px;
-margin:10px;
-border:none;
-border-radius:20px;
-background:linear-gradient(45deg,#ff00cc,#3333ff);
-color:white;
-cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-transform:scale(1.1);
-}
-
-.hidden{
-display:none;
-}
-
-.error{
-color:red;
-margin-top:20px;
-}
-
-
-/* ---------- Download Button ---------- */
+/* ==========================================================
+   TOP BUTTONS
+   ========================================================== */
 
 .top-actions{
+
     position:fixed;
-    top:20px;
-    right:20px;
-    z-index:1000;
+
+    top:25px;
+
+    right:25px;
+
+    z-index:999;
+
 }
 
 #downloadBtn{
-    width:55px;
-    height:55px;
+
+    width:58px;
+
+    height:58px;
+
     border:none;
+
     border-radius:50%;
-    background:#2563eb;
-    color:white;
-    font-size:24px;
+
     cursor:pointer;
-    transition:.3s;
-    box-shadow:0 5px 15px rgba(0,0,0,.3);
+
+    color:#fff;
+
+    font-size:24px;
+
+    background:linear-gradient(135deg,#2563eb,#00bcd4);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+    transition:.35s;
+
 }
 
 #downloadBtn:hover{
-    background:#1d4ed8;
-    transform:scale(1.08);
+
+    transform:translateY(-4px) scale(1.08);
+
 }
 
 #downloadBtn:active{
+
     transform:scale(.95);
+
 }
+
+/* ==========================================================
+   ADD SEMESTER BUTTON
+   ========================================================== */
+
+#addSemesterBtn{
+
+    margin:30px auto;
+
+    display:block;
+
+    padding:14px 35px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    border:none;
+
+    border-radius:40px;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
+
+    transition:.35s;
+
+}
+
+#addSemesterBtn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 25px rgba(0,150,255,.4);
+
+}
+
+/* ==========================================================
+   SEMESTER CARD
+   ========================================================== */
+
+.semesterBlock{
+
+    margin-top:35px;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    transition:.35s;
+
+}
+
+.semesterBlock:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+.semesterBlock h2{
+
+    margin-bottom:20px;
+
+    color:#00ffff;
+
+    font-size:28px;
+
+}
+
+/* ==========================================================
+   FILE INPUT
+   ========================================================== */
+
+input[type=file]{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:20px;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.1);
+
+    color:#fff;
+
+    border:1px solid rgba(255,255,255,.2);
+
+}
+
+input[type=file]::file-selector-button{
+
+    border:none;
+
+    padding:10px 18px;
+
+    margin-right:15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    background:#2563eb;
+
+}
+
+/* ==========================================================
+   TABLE
+   ========================================================== */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:18px;
+
+    overflow:hidden;
+
+    border-radius:15px;
+
+}
+
+thead{
+
+    background:linear-gradient(135deg,#2196f3,#00bcd4);
+
+}
+
+thead th{
+
+    padding:14px;
+
+    font-size:16px;
+
+    color:#fff;
+
+}
+
+tbody td{
+
+    padding:13px;
+
+    text-align:center;
+
+    border-bottom:1px solid rgba(255,255,255,.12);
+
+    background:rgba(255,255,255,.05);
+
+    transition:.3s;
+
+}
+
+tbody tr:hover td{
+
+    background:rgba(255,255,255,.12);
+
+}
+
+td[contenteditable=true]{
+
+    outline:none;
+
+}
+
+td[contenteditable=true]:focus{
+
+    background:#1565c0;
+
+}
+
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:12px;
+
+    padding:10px 22px;
+
+    margin:12px 8px;
+
+    color:#fff;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+}
+
+button:nth-of-type(1){
+
+    background:linear-gradient(135deg,#ff9800,#ff5722);
+
+}
+
+button:nth-of-type(2){
+
+    background:linear-gradient(135deg,#00b894,#00cec9);
+
+}
+
+td button{
+
+    background:#e53935;
+
+    padding:8px 16px;
+
+}
+
+/* ==========================================================
+   LOADER
+   ========================================================== */
+
+.loader{
+
+    width:65px;
+
+    height:65px;
+
+    margin:30px auto;
+
+    border-radius:50%;
+
+    border:7px solid rgba(255,255,255,.15);
+
+    border-top:7px solid cyan;
+
+    animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================================
+   ERROR
+   ========================================================== */
+
+.error{
+
+    margin-top:25px;
+
+    color:#ff7675;
+
+    font-size:18px;
+
+    text-align:center;
+
+}
+
+.hidden{
+
+    display:none;
+
+}
+
+/* ==========================================================
+   RESULT SECTION
+   ========================================================== */
+
+#finalResult{
+
+    margin-top:60px;
+
+    animation:fadeUp .8s;
+
+}
+
+.resultHeading{
+
+    text-align:center;
+
+    font-size:36px;
+
+    margin-bottom:35px;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(50px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/* ==========================================================
+   ADVANCED CGPA CALCULATOR
+   PART 2
+   Dashboard, Cards & CGPA Meter
+   ========================================================== */
+
+/* ================= Dashboard ================= */
+
+.dashboard{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:35px;
+
+    margin-top:40px;
+
+    align-items:center;
+
+}
+
+/* ================= CGPA Card ================= */
+
+.cgpaCard{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    transition:.4s;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+}
+
+.cgpaCard:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 45px rgba(0,255,255,.25);
+
+}
+
+/* ================= Circular Meter ================= */
+
+.progressCircle{
+
+    position:relative;
+
+    width:220px;
+
+    height:220px;
+
+}
+
+.progressCircle svg{
+
+    transform:rotate(-90deg);
+
+}
+
+.bgCircle{
+
+    fill:none;
+
+    stroke:rgba(255,255,255,.12);
+
+    stroke-width:12;
+
+}
+
+.progressCircleStroke{
+
+    fill:none;
+
+    stroke:#00e5ff;
+
+    stroke-width:12;
+
+    stroke-linecap:round;
+
+    stroke-dasharray:565;
+
+    stroke-dashoffset:565;
+
+    transition:stroke-dashoffset 1.8s ease;
+
+    filter:drop-shadow(0 0 12px cyan);
+
+}
+
+.circleContent{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+#cgpaValue{
+
+    font-size:56px;
+
+    font-weight:bold;
+
+    color:#ffffff;
+
+}
+
+.circleContent span{
+
+    margin-top:8px;
+
+    font-size:18px;
+
+    letter-spacing:2px;
+
+    color:#9be7ff;
+
+}
+
+/* ================= Performance Card ================= */
+
+.performanceCard{
+
+    padding:35px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    text-align:center;
+
+    transition:.4s;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+}
+
+.performanceCard:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.performanceCard h2{
+
+    margin-bottom:25px;
+
+    font-size:28px;
+
+}
+
+/* ================= Badge ================= */
+
+.badge{
+
+    display:inline-block;
+
+    padding:15px 35px;
+
+    border-radius:50px;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+    margin-bottom:18px;
+
+    color:white;
+
+    background:linear-gradient(135deg,#ff9800,#ff5722);
+
+    box-shadow:0 10px 30px rgba(255,140,0,.35);
+
+    animation:pulseBadge 2s infinite;
+
+}
+
+@keyframes pulseBadge{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.08);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+#badgeDescription{
+
+    margin-top:10px;
+
+    color:#d6ecff;
+
+    font-size:18px;
+
+    line-height:1.7;
+
+}
+
+/* ================= Percentage Card ================= */
+
+.percentageBox{
+
+    margin-top:35px;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:linear-gradient(135deg,#1f4068,#2563eb);
+
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+}
+
+.percentageBox h3{
+
+    margin-bottom:12px;
+
+    font-size:24px;
+
+}
+
+#percentageValue{
+
+    font-size:48px;
+
+    font-weight:bold;
+
+    color:#00ffcc;
+
+}
+
+/* ================= Semester SGPA ================= */
+
+.semesterSection{
+
+    margin-top:55px;
+
+}
+
+.semesterSection h2{
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    font-size:34px;
+
+}
+
+#semesterResults{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+.sgpaCard{
+
+    padding:25px;
+
+    text-align:center;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(15px);
+
+    transition:.35s;
+
+}
+
+.sgpaCard:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 35px rgba(0,255,255,.18);
+
+}
+
+.sgpaCard h3{
+
+    color:#00ffff;
+
+    margin-bottom:15px;
+
+}
+
+.sgpaValue{
+
+    font-size:38px;
+
+    font-weight:bold;
+
+}
+
+.sgpaText{
+
+    margin-top:8px;
+
+    color:#b8dfff;
+
+}
+
+/* ================= AI Analysis ================= */
+
+.analysisCard{
+
+    margin-top:60px;
+
+    padding:35px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    transition:.35s;
+
+}
+
+.analysisCard:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.analysisCard h2{
+
+    margin-bottom:20px;
+
+    color:#00ffff;
+
+}
+
+#analysisText{
+
+    line-height:1.9;
+
+    font-size:18px;
+
+    color:#d8ebff;
+
+}
+
+/* ================= Floating Animation ================= */
+
+@keyframes floating{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-8px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.cgpaCard{
+
+    animation:floating 5s ease-in-out infinite;
+
+}
+
+.performanceCard{
+
+    animation:floating 6s ease-in-out infinite;
+
+}
+
+/* ================= Fade Animation ================= */
+
+.fadeIn{
+
+    animation:fadeAnimation .8s ease;
+
+}
+
+@keyframes fadeAnimation{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
