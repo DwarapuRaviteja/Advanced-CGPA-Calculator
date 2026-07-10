@@ -88,3 +88,35 @@ display:none;
 color:red;
 margin-top:20px;
 }
+
+
+/* ---------- Download Button ---------- */
+
+.top-actions{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:1000;
+}
+
+#downloadBtn{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#2563eb;
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+#downloadBtn:hover{
+    background:#1d4ed8;
+    transform:scale(1.08);
+}
+
+#downloadBtn:active{
+    transform:scale(.95);
+}
