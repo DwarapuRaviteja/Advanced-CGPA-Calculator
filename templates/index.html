@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Advanced CGPA Calculator</title>
-<link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced CGPA Calculator</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
+
 <body>
 
-<div class="container">
+    <div class="top-actions">
+        <button id="downloadBtn" onclick="downloadPDF()" title="Download PDF">
+            ⬇
+        </button>
+    </div>
 
-<h1>Advanced CGPA Calculator</h1>
+    <div class="container" id="pdfContent">
 
+        <h1>Advanced CGPA Calculator</h1>
 
+        <div id="semesterContainer"></div>
 
-<div id="semesterContainer"></div>
-<button onclick="addSemester()">Add Semester</button>
-<button id="calculateAll" onclick="calculateAll()" class="hidden">Calculate Overall CGPA</button>
+        <button onclick="addSemester()">
+            Add Semester
+        </button>
 
-<div id="finalResult" class="hidden">
-<h2 id="cgpa"></h2>
-<h2 id="percentage"></h2>
-<div id="semesterResults"></div>
-</div>
+        <button id="calculateAll"
+                onclick="calculateAll()"
+                class="hidden">
+            Calculate Overall CGPA
+        </button>
 
-<div id="loader" class="loader hidden"></div>
-<div id="error" class="error hidden"></div>
+        <div id="finalResult" class="hidden">
+            <h2 id="cgpa"></h2>
+            <h2 id="percentage"></h2>
+            <div id="semesterResults"></div>
+        </div>
 
-</div>
+        <div id="loader" class="loader hidden"></div>
 
-<script src="/static/script.js"></script>
+        <div id="error" class="error hidden"></div>
+
+    </div>
+
+    <script src="/static/script.js"></script>
+
 </body>
 </html>
