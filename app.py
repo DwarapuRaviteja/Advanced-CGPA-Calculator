@@ -88,7 +88,7 @@ def calculate():
         total_credits_all += total_credits
 
     cgpa = round(total_points_all / total_credits_all, 2)
-    percentage = round((cgpa - 0.75) * 10, 2)
+    percentage = round((cgpa - 0.50) * 10, 2)
 
     return jsonify({
         "semester_sgpa": semester_results,
