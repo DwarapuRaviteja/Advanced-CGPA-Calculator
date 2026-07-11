@@ -976,3 +976,15 @@ td button{
     box-shadow:0 0 30px #0A66C2;
 
 }
+
+.clearBtn{
+
+    background:#e53935;
+
+}
+
+.clearBtn:hover{
+
+    background:#c62828;
+
+}

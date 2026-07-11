@@ -115,6 +115,7 @@ function uploadImage(input,id){
         enableEdit(id)
 
         calculateAll()
+        saveData()
 
         document.querySelector(`#table${id}`).scrollIntoView({
 
@@ -194,6 +195,7 @@ function addRow(id){
     if(td.cellIndex!==4){
 
         td.addEventListener("blur",calculateAll)
+        saveData()
 
         td.addEventListener("keyup",e=>{
 
@@ -217,6 +219,7 @@ function deleteRow(btn){
     btn.closest("tr").remove()
 
     calculateAll()
+    saveData()
 
 }
 
@@ -342,6 +345,7 @@ function calculateAll(){
         },300)
 
     })
+    saveData()
 
     .catch(()=>{
 
@@ -935,5 +939,137 @@ function showError(message){
         errorDiv.classList.add("hidden")
 
     },4000)
+
+}
+
+function saveData(){
+
+    const semesters=[]
+
+    for(let i=1;i<=semesterCount;i++){
+
+        const rows=document.querySelectorAll(`#table${i} tbody tr`)
+
+        if(rows.length===0) continue
+
+        const subjects=[]
+
+        rows.forEach(row=>{
+
+            const td=row.querySelectorAll("td")
+
+            subjects.push({
+
+                code:td[0].innerText.trim(),
+
+                name:td[1].innerText.trim(),
+
+                credits:td[2].innerText.trim(),
+
+                grade:td[3].innerText.trim()
+
+            })
+
+        })
+
+        semesters.push(subjects)
+
+    }
+
+    localStorage.setItem("cgpa_semesters",JSON.stringify(semesters))
+
+}
+
+function loadData(){
+
+    const saved=localStorage.getItem("cgpa_semesters")
+
+    if(!saved) return
+
+    const semesters=JSON.parse(saved)
+
+    semesterContainer.innerHTML=""
+
+    semesterCount=0
+
+    semesters.forEach(subjects=>{
+
+        addSemester()
+
+        const tbody=document.querySelector(`#table${semesterCount} tbody`)
+
+        tbody.innerHTML=""
+
+        subjects.forEach(sub=>{
+
+            const row=document.createElement("tr")
+
+            row.innerHTML=`
+            <td contenteditable="true">${sub.code}</td>
+            <td contenteditable="true">${sub.name}</td>
+            <td contenteditable="true">${sub.credits}</td>
+            <td contenteditable="true">${sub.grade}</td>
+            <td><button onclick="deleteRow(this)">Delete</button></td>
+            `
+
+            tbody.appendChild(row)
+
+        })
+
+        enableEdit(semesterCount)
+
+    })
+
+    calculateAll()
+
+}
+
+function clearAll(){
+
+    if(!confirm("Are you sure you want to clear all semesters and results?"))
+        return
+
+    localStorage.removeItem("cgpa_semesters")
+
+    semesterContainer.innerHTML=""
+
+    semesterCount=0
+
+    document.getElementById("finalResult").classList.add("hidden")
+
+    document.getElementById("semesterResults").innerHTML=""
+
+    document.getElementById("cgpaValue").innerText="0.00"
+
+    document.getElementById("percentageValue").innerText="0.00%"
+
+    document.getElementById("performanceBadge").innerText="No Badge"
+
+    document.getElementById("badgeDescription").innerText="Upload your semester results to view your performance."
+
+    document.getElementById("analysisText").innerHTML=""
+
+    const circle=document.getElementById("progressCircle")
+
+    if(circle){
+
+        const radius=90
+
+        const circumference=2*Math.PI*radius
+
+        circle.style.strokeDasharray=circumference
+
+        circle.style.strokeDashoffset=circumference
+
+    }
+
+    clearError()
+
+}
+
+
+window.onload=function(){
+
+    loadData()
 
 }
