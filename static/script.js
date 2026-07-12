@@ -1078,7 +1078,7 @@ function checkDevice(){
 
     const overlay=document.getElementById("desktopOnly")
 
-    if(window.innerWidth<=992){
+    if(window.innerWidth<=950){
 
         overlay.style.display="flex"
 
