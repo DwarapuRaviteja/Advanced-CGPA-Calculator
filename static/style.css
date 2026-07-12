@@ -988,3 +988,165 @@ td button{
     background:#c62828;
 
 }
+
+#desktopOnly{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+
+    height:100vh;
+
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+
+    z-index:999999;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    color:white;
+
+    padding:30px;
+
+}
+
+.desktopMessage{
+
+    max-width:550px;
+
+}
+
+.desktopIcon{
+
+    font-size:80px;
+
+    margin-top:20px;
+
+}
+
+@media(max-width:992px){
+
+    #desktopOnly{
+
+        display:flex;
+
+    }
+
+    body>*:not(#desktopOnly){
+
+        display:none !important;
+
+    }
+
+}
+ /* TITLE ANIMATION */
+.animatedTitle{
+
+    font-size:50px;
+    font-weight:800;
+    text-align:center;
+    letter-spacing:2px;
+    font-family:arial black;
+    -webkit-text-stroke:0.5px black;
+
+    background:linear-gradient(
+        90deg,
+        
+        #00f5ff,
+        #00ff95,
+        #ffe600,
+        gold,
+        #ff9800,
+        #ff4d6d,
+        #8b5cf6,
+        blue,
+        black,
+        grey,
+        white,
+        #00f5ff
+    );
+
+    background-size:400% 100%;
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+
+    animation:titleFlow 8s linear infinite;
+
+    text-shadow:0 0 20px rgba(0,255,255,.25);
+
+}
+
+@keyframes titleFlow{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    100%{
+        background-position:400% 50%;
+    }
+
+}
+
+.scrollWrapper{
+
+    width:90%;
+
+    margin:25px auto 10px;
+
+    overflow:hidden;
+
+    position:relative;
+
+    white-space:nowrap;
+
+}
+
+.scrollText{
+
+    display:inline-block;
+
+    white-space:nowrap;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    color:#8dfcff;
+
+    text-shadow:0 0 8px rgba(0,255,255,.35);
+
+    animation:scrollText 25s linear infinite;
+
+}
+
+.scrollText:hover{
+
+    animation-play-state:paused;
+
+}
+
+@keyframes scrollText{
+
+    0%{
+
+        transform:translateX(100%);
+
+    }
+
+    100%{
+
+        transform:translateX(-100%);
+
+    }
+
+}

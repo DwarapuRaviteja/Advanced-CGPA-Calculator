@@ -1073,3 +1073,22 @@ window.onload=function(){
     loadData()
 
 }
+
+function checkDevice(){
+
+    const overlay=document.getElementById("desktopOnly")
+
+    if(window.innerWidth<=992){
+
+        overlay.style.display="flex"
+
+    }else{
+
+        overlay.style.display="none"
+
+    }
+
+}
+
+window.addEventListener("load",checkDevice)
+window.addEventListener("resize",checkDevice)
