@@ -1039,11 +1039,7 @@ td button{
 
     }
 
-    body>*:not(#desktopOnly){
-
-        display:none !important;
-
-    }
+    
 
 }
  /* TITLE ANIMATION */
