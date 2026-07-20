@@ -29,8 +29,7 @@
         <h1>💻 Desktop Mode Required</h1>
 
         <p>
-            This application is optimized for desktop and laptop screens.
-            Please open it on a desktop browser for the best experience.
+            This application is optimized for desktop. For the best experience on mobile, enable your browser's 'Desktop site' option.
         </p>
 
         <div class="desktopIcon">🖥️</div>
@@ -89,6 +88,9 @@
             ➕ Add Semester
 
         </button>
+        <button id="portalBtn" onclick="openPortalPopup()">
+    <span>🌐 Import from Ideal College Portal</span>
+</button>
         
     <div class="scrollWrapper">
     <div class="scrollText">
@@ -97,7 +99,15 @@
 </div>
 
 
-        <div id="loader" class="loader hidden"></div>
+        <div id="loader" class="loader hidden">
+
+    <div class="spinner"></div>
+
+    <h3>Importing Results...</h3>
+
+    <p>Please wait while we fetch your semester results.</p>
+
+</div>
 
         <div id="error" class="error hidden"></div>
 
@@ -245,6 +255,84 @@
     </a>
 
 </footer>
+
+
+<!-- ================= Portal Popup ================= -->
+
+<div id="portalPopup" class="portalPopup hidden">
+
+    <div class="portalCard">
+
+        <div class="portalHeader">
+
+            <h2>🎓 Ideal College Portal</h2>
+
+            <p>
+                Enter your portal credentials
+            </p>
+
+        </div>
+
+        <div class="portalInputs">
+
+            <input
+                id="portalUsername"
+                placeholder="Username">
+
+            <input
+                id="portalPassword"
+                type="password"
+                placeholder="Password">
+
+            <input
+                id="portalEmail"
+                placeholder="Email">
+
+            <input
+                id="portalPhone"
+                placeholder="Phone Number">
+
+        </div>
+
+        <div class="portalButtons">
+
+            <button class="importButton"
+                    onclick="startPortalImport()">
+
+                Import Results
+
+            </button>
+
+            <button class="cancelButton"
+                    onclick="closePortalPopup()">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="portalProgressPopup" class="portal-progress-popup">
+
+    <div class="portal-progress-box">
+
+        <div class="progress-loader"></div>
+
+        <h2>Importing Results</h2>
+
+        <p id="portalProgressText">
+            Opening Login Page...
+        </p>
+
+    </div>
+
+</div>
+
     <script src="/static/script.js"></script>
     
 

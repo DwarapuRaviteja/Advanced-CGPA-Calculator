@@ -380,23 +380,7 @@ td button{
    LOADER
    ========================================================== */
 
-.loader{
 
-    width:65px;
-
-    height:65px;
-
-    margin:30px auto;
-
-    border-radius:50%;
-
-    border:7px solid rgba(255,255,255,.15);
-
-    border-top:7px solid cyan;
-
-    animation:spin 1s linear infinite;
-
-}
 
 @keyframes spin{
 
@@ -426,7 +410,7 @@ td button{
 
 .hidden{
 
-    display:none;
+    display:none !important;
 
 }
 
@@ -1142,6 +1126,465 @@ td button{
     100%{
 
         transform:translateX(-100%);
+
+    }
+
+}
+
+/*==========================================
+        IDEAL PORTAL IMPORT
+============================================*/
+
+#portalBtn{
+
+    width:100%;
+    max-width:420px;
+    margin:30px auto;
+    display:block;
+
+    padding:18px 30px;
+
+    border:none;
+    border-radius:18px;
+
+    cursor:pointer;
+
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+
+    position:relative;
+    overflow:hidden;
+
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.18);
+
+    box-shadow:
+        0 10px 35px rgba(0,255,255,.18),
+        inset 0 0 15px rgba(255,255,255,.05);
+
+    transition:.35s;
+}
+
+#portalBtn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 15px 40px rgba(0,255,255,.35);
+
+}
+
+#portalBtn::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-120%;
+
+    width:60%;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.45),
+        transparent
+    );
+
+    transform:skewX(-25deg);
+
+    animation:portalShine 3s linear infinite;
+
+}
+
+@keyframes portalShine{
+
+    100%{
+
+        left:170%;
+
+    }
+
+}
+
+/*================ Popup ================*/
+
+.portalPopup{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(10px);
+
+    z-index:999999;
+
+}
+
+.portalCard{
+
+    width:460px;
+
+    max-width:92%;
+
+    padding:35px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    box-shadow:
+
+        0 20px 60px rgba(0,0,0,.45),
+
+        0 0 35px rgba(0,255,255,.18);
+
+    animation:portalOpen .35s ease;
+
+}
+
+@keyframes portalOpen{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px) scale(.92);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0) scale(1);
+
+    }
+
+}
+
+.portalHeader{
+
+    text-align:center;
+
+    margin-bottom:28px;
+
+}
+
+.portalHeader h2{
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+}
+
+.portalHeader p{
+
+    color:#cfefff;
+
+}
+
+/*================ Inputs ================*/
+
+.portalInputs input{
+
+    width:100%;
+
+    padding:14px;
+
+    margin:12px 0;
+
+    border-radius:12px;
+
+    outline:none;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    background:rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:16px;
+
+    transition:.3s;
+
+}
+
+.portalInputs input::placeholder{
+
+    color:#dddddd;
+
+}
+
+.portalInputs input:focus{
+
+    border-color:#00ffff;
+
+    box-shadow:0 0 15px rgba(0,255,255,.35);
+
+}
+
+/*================ Buttons ================*/
+
+.portalButtons{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+.importButton{
+
+    flex:1;
+
+    background:linear-gradient(
+        135deg,
+        #00bcd4,
+        #2196f3
+    );
+
+}
+
+.cancelButton{
+
+    flex:1;
+
+    background:linear-gradient(
+        135deg,
+        #ef5350,
+        #c62828
+    );
+
+}
+
+.importButton:hover,
+.cancelButton:hover{
+
+    transform:translateY(-3px);
+
+}
+
+/*================ Loader ================*/
+
+.loader{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    background:rgba(0,0,0,.55);
+
+    backdrop-filter:blur(8px);
+
+    z-index:1000000;
+
+}
+
+.loader.show{
+
+    display:flex;
+
+}
+
+.spinner{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    border:7px solid rgba(255,255,255,.2);
+
+    border-top:7px solid #00e5ff;
+
+    animation:portalSpin 1s linear infinite;
+
+}
+
+.loader h3{
+
+    margin-top:25px;
+
+    font-size:24px;
+
+    color:white;
+
+}
+
+.loader p{
+
+    margin-top:10px;
+
+    color:#d6d6d6;
+
+    font-size:15px;
+
+}
+
+@keyframes portalSpin{
+
+    from{
+
+        transform:rotate(0deg);
+
+    }
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+.portal-progress-popup{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100vw;
+    height:100vh;
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(0,0,0,.55);
+
+    z-index:999999;
+
+}
+
+.portal-progress-box{
+
+    width:420px;
+
+    background:rgba(20,20,20,0.65);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:20px;
+
+    padding:35px;
+
+    text-align:center;
+
+    color:#fff;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.45),
+        inset 0 1px 1px rgba(255,255,255,.08);
+
+    animation:popupScale .3s ease;
+
+}
+
+.portal-progress-box h2{
+
+    color:#ffffff;
+
+    margin-top:20px;
+    margin-bottom:15px;
+
+    font-size:34px;
+
+}
+
+.portal-progress-box p{
+
+    color:rgba(255,255,255,.85);
+
+    font-size:18px;
+
+    font-weight:500;
+
+    margin-top:18px;
+
+}
+
+.progress-loader{
+
+    width:65px;
+    height:65px;
+
+    margin:auto;
+
+    border:5px solid rgba(255,255,255,.15);
+
+    border-top:5px solid #00c3ff;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    box-shadow:0 0 18px rgba(0,195,255,.35);
+
+}
+
+@keyframes spin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+@keyframes popupScale{
+
+    from{
+
+        transform:scale(.8);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:scale(1);
+
+        opacity:1;
 
     }
 

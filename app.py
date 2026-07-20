@@ -5,8 +5,13 @@ import io
 import json
 import re
 import os
+from portal_import import fetch_student_results
+from parser import parse_semester_tables
 
 app = Flask(__name__)
+portal_progress = {
+    "status": "Idle"
+}
 
 genai.configure(api_key=os.environ.get("calculator"))
 
@@ -61,6 +66,10 @@ def analyze():
     except:
         return jsonify({"valid": False})
 
+@app.route("/portal-status")
+def portal_status():
+    return jsonify(portal_progress)
+
 @app.route('/calculate', methods=['POST'])
 def calculate():
     data = request.json
@@ -96,5 +105,50 @@ def calculate():
         "percentage": percentage
     })
 
+@app.route('/import-portal', methods=['POST'])
+def import_portal():
+
+    try:
+
+        data = request.get_json()
+
+        username = data.get("username", "").strip()
+        password = data.get("password", "").strip()
+        email = data.get("email", "").strip()
+        phone = data.get("phone", "").strip()
+
+        if not username or not password:
+            return jsonify({
+                "success": False,
+                "message": "Username and Password are required."
+            }), 400
+
+
+        def update(msg):
+            portal_progress["status"] = msg
+
+        result_tables = fetch_student_results(username,password,email,phone,update)
+
+        semester_data = parse_semester_tables(result_tables)
+        portal_progress["status"] = "Import Completed Successfully"
+
+        return jsonify({
+            "success": True,
+            "semesters": semester_data
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 500
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
+    app.run(
+    host="0.0.0.0",
+    port=int(os.environ.get("PORT",10000)),
+    debug=False,
+    use_reloader=False
+)

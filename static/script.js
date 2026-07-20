@@ -3,7 +3,7 @@ const loader = document.getElementById("loader")
 const errorDiv = document.getElementById("error")
 let semesterCount = 0
 
-function addSemester(){
+function addSemester(openFile=true){
     semesterCount++
 
     const div = document.createElement("div")
@@ -37,13 +37,22 @@ function addSemester(){
 
 })
 
-const fileInput=div.querySelector("input[type='file']")
+const fileInput = div.querySelector("input[type='file']");
 
-setTimeout(()=>{
+if(openFile){
 
-    fileInput.click()
+    setTimeout(() => {
 
-},300)
+        fileInput.click();
+
+    },300);
+
+}else{
+
+    // Hide image upload input for portal imported semesters
+    fileInput.style.display = "none";
+
+}
 }
 
 function uploadImage(input,id){
@@ -225,58 +234,56 @@ function deleteRow(btn){
 
 function calculateAll(){
 
-    const semesters=[]
+    const semesters = [];
 
-    clearError()
+    clearError();
 
-    for(let i=1;i<=semesterCount;i++){
+    for(let i = 1; i <= semesterCount; i++){
 
-        const rows=document.querySelectorAll(`#table${i} tbody tr`)
+        const rows = document.querySelectorAll(`#table${i} tbody tr`);
 
-        if(rows.length===0) continue
+        if(rows.length === 0) continue;
 
-        const subjects=[]
+        const subjects = [];
 
         rows.forEach(row=>{
 
-            const td=row.querySelectorAll("td")
+            const td = row.querySelectorAll("td");
 
-            if(td.length<4) return
+            if(td.length < 4) return;
 
-            const credits=td[2].innerText.trim()
-            const grade=td[3].innerText.trim()
+            const credits = td[2].innerText.trim();
+            const grade = td[3].innerText.trim();
 
-            if(credits!=="" && grade!==""){
+            if(credits !== "" && grade !== ""){
 
                 subjects.push({
 
-                    code:td[0].innerText.trim(),
+                    code: td[0].innerText.trim(),
+                    name: td[1].innerText.trim(),
+                    credits: credits,
+                    grade: grade
 
-                    name:td[1].innerText.trim(),
-
-                    credits,
-
-                    grade
-
-                })
+                });
 
             }
 
-        })
+        });
 
-        if(subjects.length) semesters.push(subjects)
+        if(subjects.length){
+            semesters.push(subjects);
+        }
 
     }
 
     if(!semesters.length){
 
-        finalResult.classList.add("hidden")
-
-        return
+        finalResult.classList.add("hidden");
+        return;
 
     }
 
-    loader.classList.remove("hidden")
+    loader.classList.remove("hidden");
 
     fetch("/calculate",{
 
@@ -286,37 +293,47 @@ function calculateAll(){
             "Content-Type":"application/json"
         },
 
-        body:JSON.stringify({semesters})
+        body:JSON.stringify({
+            semesters
+        })
 
     })
 
-    .then(res=>res.json())
+    .then(res=>{
+
+        if(!res.ok){
+            throw new Error("Server Error");
+        }
+
+        return res.json();
+
+    })
 
     .then(data=>{
 
-        loader.classList.add("hidden")
+        loader.classList.add("hidden");
 
-        finalResult.classList.remove("hidden")
+        finalResult.classList.remove("hidden");
 
-        animateValue("cgpaValue",data.cgpa)
+        animateValue("cgpaValue", data.cgpa);
 
-        animateValue("percentageValue",data.percentage)
+        animateValue("percentageValue", data.percentage);
 
-        updateCircle(parseFloat(data.cgpa))
+        updateCircle(parseFloat(data.cgpa));
 
-        updateBadge(parseFloat(data.cgpa))
+        updateBadge(parseFloat(data.cgpa));
 
-        showAnalysis(parseFloat(data.cgpa))
+        showAnalysis(parseFloat(data.cgpa));
 
-        celebrate(parseFloat(data.cgpa))
+        celebrate(parseFloat(data.cgpa));
 
-        const result=document.getElementById("semesterResults")
+        const result = document.getElementById("semesterResults");
 
-        result.innerHTML=""
+        result.innerHTML = "";
 
         data.semester_sgpa.forEach((sgpa,index)=>{
 
-            result.innerHTML+=`
+            result.innerHTML += `
 
             <div class="sgpaCard fadeIn">
 
@@ -328,32 +345,36 @@ function calculateAll(){
 
             </div>
 
-            `
+            `;
 
-        })
+        });
 
+        // Save latest data
+        saveData();
+
+        // Scroll after rendering
         setTimeout(()=>{
 
             finalResult.scrollIntoView({
 
                 behavior:"smooth",
-
                 block:"start"
 
-            })
+            });
 
-        },300)
-
-    })
-    saveData()
-
-    .catch(()=>{
-
-        loader.classList.add("hidden")
-
-        showError("Calculation failed. Please try again.")
+        },300);
 
     })
+
+    .catch(err=>{
+
+        console.error(err);
+
+        loader.classList.add("hidden");
+
+        showError("Calculation failed. Please try again.");
+
+    });
 
 }
 
@@ -944,83 +965,94 @@ function showError(message){
 
 function saveData(){
 
-    const semesters=[]
+    const semesters = [];
 
-    for(let i=1;i<=semesterCount;i++){
+    document.querySelectorAll(".semesterBlock").forEach(block => {
 
-        const rows=document.querySelectorAll(`#table${i} tbody tr`)
+        const semesterName = block.querySelector("h2").innerText;
 
-        if(rows.length===0) continue
+        const subjects = [];
 
-        const subjects=[]
+        block.querySelectorAll("tbody tr").forEach(row => {
 
-        rows.forEach(row=>{
-
-            const td=row.querySelectorAll("td")
+            const td = row.querySelectorAll("td");
 
             subjects.push({
 
-                code:td[0].innerText.trim(),
+                code: td[0].innerText.trim(),
+                name: td[1].innerText.trim(),
+                credits: td[2].innerText.trim(),
+                grade: td[3].innerText.trim()
 
-                name:td[1].innerText.trim(),
+            });
 
-                credits:td[2].innerText.trim(),
+        });
 
-                grade:td[3].innerText.trim()
+        if(subjects.length){
 
-            })
+            semesters.push({
 
-        })
+                semester: semesterName,
+                subjects: subjects
 
-        semesters.push(subjects)
+            });
 
-    }
+        }
 
-    localStorage.setItem("cgpa_semesters",JSON.stringify(semesters))
+    });
+
+    localStorage.setItem(
+        "cgpa_semesters",
+        JSON.stringify(semesters)
+    );
 
 }
 
 function loadData(){
 
-    const saved=localStorage.getItem("cgpa_semesters")
+    const saved = localStorage.getItem("cgpa_semesters");
 
-    if(!saved) return
+    if(!saved) return;
 
-    const semesters=JSON.parse(saved)
+    const semesters = JSON.parse(saved);
 
-    semesterContainer.innerHTML=""
+    semesterContainer.innerHTML = "";
 
-    semesterCount=0
+    semesterCount = 0;
 
-    semesters.forEach(subjects=>{
+    semesters.forEach(data => {
 
-        addSemester()
+        // Create semester without opening file picker
+        addSemester(false);
 
-        const tbody=document.querySelector(`#table${semesterCount} tbody`)
+        // Restore semester title
+        document.querySelector(`#semesterTitle${semesterCount}`).innerText = data.semester;
 
-        tbody.innerHTML=""
+        const tbody = document.querySelector(`#table${semesterCount} tbody`);
 
-        subjects.forEach(sub=>{
+        tbody.innerHTML = "";
 
-            const row=document.createElement("tr")
+        data.subjects.forEach(sub => {
 
-            row.innerHTML=`
-            <td contenteditable="true">${sub.code}</td>
-            <td contenteditable="true">${sub.name}</td>
-            <td contenteditable="true">${sub.credits}</td>
-            <td contenteditable="true">${sub.grade}</td>
-            <td><button onclick="deleteRow(this)">Delete</button></td>
-            `
+            const row = document.createElement("tr");
 
-            tbody.appendChild(row)
+            row.innerHTML = `
+                <td contenteditable="true">${sub.code}</td>
+                <td contenteditable="true">${sub.name}</td>
+                <td contenteditable="true">${sub.credits}</td>
+                <td contenteditable="true">${sub.grade}</td>
+                <td><button onclick="deleteRow(this)">Delete</button></td>
+            `;
 
-        })
+            tbody.appendChild(row);
 
-        enableEdit(semesterCount)
+        });
 
-    })
+        enableEdit(semesterCount);
 
-    calculateAll()
+    });
+
+    calculateAll();
 
 }
 
@@ -1092,3 +1124,350 @@ function checkDevice(){
 
 window.addEventListener("load",checkDevice)
 window.addEventListener("resize",checkDevice)
+
+
+
+/*==================================================
+        PORTAL IMPORT ANIMATION
+==================================================*/
+
+function openPortalPopup(){
+
+    const popup = document.getElementById("portalPopup");
+
+    popup.classList.remove("hidden");
+    popup.style.display="flex";
+
+}
+
+function closePortalPopup(){
+
+    const popup=document.getElementById("portalPopup");
+
+    popup.classList.add("hidden");
+    popup.style.display="none";
+
+}
+
+
+
+/*----------------------------------------------*/
+
+
+
+async function startPortalImport(){
+
+    const username = document.getElementById("portalUsername").value.trim();
+    const password = document.getElementById("portalPassword").value.trim();
+    const email = document.getElementById("portalEmail").value.trim();
+    const phone = document.getElementById("portalPhone").value.trim();
+
+    if(!username || !password){
+
+        showError("Username and Password are required.");
+        return;
+
+    }
+
+    // Close popup
+    closePortalPopup();
+
+    // Show existing loading spinner
+    loader.classList.add("show");
+
+    try{
+
+        const response = await fetch("/import-portal",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                username,
+                password,
+                email,
+                phone
+
+            })
+
+        });
+
+        const text = await response.text();
+
+        console.log("========== SERVER RESPONSE ==========");
+        console.log(text);
+
+        const result = JSON.parse(text);
+
+        // Hide loading spinner
+        loader.classList.remove("show");
+
+        if(!result.success){
+
+            showError(result.message);
+            return;
+
+        }
+
+        // Fill semester tables
+        populatePortalData(result.semesters);
+
+        // Save data
+        saveData();
+
+        // Scroll to results
+        setTimeout(()=>{
+
+            document.getElementById("finalResult").scrollIntoView({
+
+                behavior:"smooth",
+                block:"start"
+
+            });
+
+        },500);
+
+    }
+
+    catch(err){
+
+        loader.classList.add("hidden");
+
+        showError("Unable to connect to the server.");
+
+        console.error(err);
+
+    }
+
+}
+
+
+
+/*==================================================
+        PORTAL IMPORT ANIMATION
+==================================================*/
+
+function openPortalPopup(){
+
+    const popup = document.getElementById("portalPopup");
+
+    popup.classList.remove("hidden");
+    popup.style.display = "flex";
+
+}
+
+function closePortalPopup(){
+
+    const popup = document.getElementById("portalPopup");
+
+    popup.classList.add("hidden");
+    popup.style.display = "none";
+
+}
+
+
+/*----------------------------------------------*/
+
+
+async function startPortalImport(){
+
+    const username = document.getElementById("portalUsername").value.trim();
+    const password = document.getElementById("portalPassword").value.trim();
+    const email = document.getElementById("portalEmail").value.trim();
+    const phone = document.getElementById("portalPhone").value.trim();
+    document.getElementById("portalProgressPopup").style.display="flex";
+    startProgressPolling();
+
+    if(!username || !password){
+
+        showError("Username and Password are required.");
+        return;
+
+    }
+
+    // Close popup
+    closePortalPopup();
+
+    // Show existing loading spinner
+    loader.classList.add("show");
+
+    try{
+
+        const response = await fetch("/import-portal",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                username,
+                password,
+                email,
+                phone
+
+            })
+
+        });
+
+        const result = await response.json();
+
+        // Hide loading spinner
+        loader.classList.remove("show");
+
+        if(!result.success){
+
+    clearInterval(pollInterval);
+
+    document.getElementById("portalProgressText").innerHTML =
+        "❌ Invalid Username or Password";
+
+    setTimeout(()=>{
+
+        document.getElementById("portalProgressPopup").style.display = "none";
+
+        showError(result.message || "Please enter valid credentials.");
+
+    },2500);
+
+    return;
+
+}
+
+        // Fill semester tables
+        populatePortalData(result.semesters);
+
+        // Save data
+        saveData();
+
+        // Scroll to results
+        setTimeout(()=>{
+
+            document.getElementById("finalResult").scrollIntoView({
+
+                behavior:"smooth",
+                block:"start"
+
+            });
+
+        },500);
+
+    }
+
+    catch(err){
+
+    clearInterval(pollInterval);
+
+    document.getElementById("portalProgressText").innerHTML =
+        "❌ Unable to connect to server";
+
+    setTimeout(()=>{
+
+        document.getElementById("portalProgressPopup").style.display="none";
+
+        showError("Unable to connect to the server.");
+
+    },1800);
+
+    loader.classList.remove("show");
+
+    console.error(err);
+
+}
+
+}
+
+
+/*==================================================
+        POPULATE PORTAL DATA
+==================================================*/
+
+/*==================================================
+        POPULATE PORTAL DATA
+==================================================*/
+
+function populatePortalData(semesters){
+
+    // Remove existing semesters
+    document.querySelectorAll(".semesterBlock").forEach(block => block.remove());
+
+    semesterCount = 0;
+
+    Object.entries(semesters).forEach(([semesterName, subjects]) => {
+
+        addSemester(false);
+
+        const block = document.querySelectorAll(".semesterBlock")[semesterCount - 1];
+
+        block.querySelector("h2").innerText = semesterName;
+
+        const tbody = block.querySelector("tbody");
+
+        tbody.innerHTML = "";
+
+        subjects.forEach(subject => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td contenteditable="true">${subject.code || ""}</td>
+                <td contenteditable="true">${subject.name || ""}</td>
+                <td contenteditable="true">${subject.credits || ""}</td>
+                <td contenteditable="true">${subject.grade || ""}</td>
+                <td>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+
+        });
+
+    });
+
+    calculateAll();
+
+}
+
+let pollInterval;
+
+function startProgressPolling(){
+
+    pollInterval = setInterval(async()=>{
+
+        try{
+
+            const res = await fetch("/portal-status");
+            const data = await res.json();
+
+            document.getElementById("portalProgressText").innerHTML = data.status;
+
+            if(data.status === "Import Completed Successfully"){
+
+                clearInterval(pollInterval);
+
+                setTimeout(()=>{
+
+                    document.getElementById("portalProgressPopup").style.display = "none";
+
+                },1000);
+
+            }
+
+        }
+        catch(err){
+
+            clearInterval(pollInterval);
+            console.error(err);
+
+        }
+
+    },500);
+
+}

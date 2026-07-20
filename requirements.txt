@@ -1,4 +1,10 @@
-flask
+Flask
+flask-cors
 google-generativeai
-pillow
+Pillow
+beautifulsoup4
+lxml
+playwright
+python-dotenv
+requests
 gunicorn
